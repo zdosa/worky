@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "worky",
   "browserify": {
     "transform": [
       [
@@ -18,7 +18,7 @@
     "dev": "node server.js & watchify index.jsx -p browserify-hmr -o public/bundle.js -dv",
     "build": "NODE_ENV=production browserify index.jsx | uglifyjs -cm > public/bundle.js -dv"
   },
-  "author": "z",
+  "author": "Zoltan Dosa",
   "license": "ISC",
   "devDependencies": {
     "babel-preset-es2015": "^6.24.0",
