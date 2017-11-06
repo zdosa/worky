@@ -1,22 +1,46 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
-import { start } from '../redux/example.js'
+import { socketConnect, socketDisconnect, listenTimer } from '../redux/socket.js'
 
 class Connected extends Component {
-  componentDidMount() {
-    this.props.start()
+
+  handleConnectSocket() {
+    this.props.socketConnect()
+  }
+
+  handleDisconnectSocket() {
+    this.props.socketDisconnect()
+  }
+
+  handleListenTimer() {
+    this.props.listenTimer()
   }
 
   render() {
+    const { socketReducer } = this.props
     return (
-      <h1>I'm connected, and I worky</h1>
+      <div>
+        <h1>I'm connected, and its worky</h1>
+        <input type="button" value="Connect Socket" onClick={this.handleConnectSocket.bind(this)} />
+        <input type="button" value="Disconnect Socket" onClick={this.handleDisconnectSocket.bind(this)} />
+        <input type="button" value="Listen Timer" onClick={this.handleListenTimer.bind(this)} />
+        {socketReducer.timer && 
+          <h2>{socketReducer.timer}</h2>
+        }
+      </div>
     )
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  start: () => dispatch(start()),
+const mapStateToProps = state => ({
+  socketReducer: state.socketReducer,
 })
 
-export default connect(null, mapDispatchToProps)(Connected)
+const mapDispatchToProps = dispatch => ({
+  socketConnect: () => dispatch(socketConnect()),
+  socketDisconnect: () => dispatch(socketDisconnect()),
+  listenTimer: () => dispatch(listenTimer()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Connected)
