@@ -21,6 +21,7 @@
   "author": "Zoltan Dosa",
   "license": "ISC",
   "devDependencies": {
+    "babel-core": "latest",
     "babel-preset-es2015": "latest",
     "babel-preset-react": "latest",
     "babelify": "latest",
@@ -33,6 +34,8 @@
     "express": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-router-dom": "latest"
+    "react-redux": "^5.0.6",
+    "react-router-dom": "latest",
+    "redux": "^3.7.2"
   }
 }
