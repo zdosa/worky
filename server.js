@@ -17,10 +17,14 @@ io.on('connection', function(client) {
   console.log('Client connected...');
   client.emit('redux', 'SOCKET_CONNECTED')
   setInterval(() => {
-    client.emit('timer', new Date());
+    client.emit('redux', 'DISPATCH_EVERY_SECOND')
   }, 1000);
-  client.on('join', function(data) {
-    console.log(data);
+  setInterval(() => {
+    client.emit('timer', {date: new Date(), test: 'shit'});
+  }, 500)
+  client.on('disconnect', function(data) {
+    console.log('Client disconnected')
+    client.emit('SOCKET_DISCONNECTED')
   });
 });
 

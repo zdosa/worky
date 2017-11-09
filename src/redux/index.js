@@ -3,8 +3,9 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
 import socketReducer from './socket.js'
+import { connect, disconnect, on } from '../utils/socket.js'
 
-const middleware = [thunk]
+const middleware = [thunk.withExtraArgument({ connect, disconnect, on })]
 
 const reducer = combineReducers({
   socketReducer,

@@ -1,8 +1,7 @@
-import { connect, disconnect, on } from '../utils/socket.js'
-
 const SOCKET = 'SOCKET'
-const SOCKET_SUCCESS = 'SOCKET_CONNECTED'
+const SOCKET_CONNECTED = 'SOCKET_CONNECTED'
 const SOCKET_DISCONNECTED = 'SOCKET_DISCONNECTED'
+const DISPATCH_EVERY_SECOND = 'DISPATCH_EVERY_SECOND'
 const TIMER = 'TIMER'
 
 const initialState = {
@@ -20,7 +19,7 @@ export default function reducer(state = initialState, action) {
         loading: true,
         error: null,
       }
-    case SOCKET_SUCCESS:
+    case SOCKET_CONNECTED:
       return {
         ...state,
         loading: false,
@@ -38,26 +37,32 @@ export default function reducer(state = initialState, action) {
         ...state, 
         timer: action.timer
       }
+    case DISPATCH_EVERY_SECOND:
+      return {
+        ...state,
+      }
     default:
       return state
   }
 }
 
-export const socketConnect = () => (dispatch, getState) => {
-  dispatch({ type: SOCKET })
+export const listenSocket = () => (dispatch, getState, { connect, disconnect, on }) => {
+  dispatch({ type: 'SOCKET' })
   connect()
   on('redux', (message) => {
     dispatch({ type: message })
   })
+  on('disconnect', () => {
+    dispatch({ type: SOCKET_DISCONNECTED })
+  })
 }
 
-export const socketDisconnect = () => (dispatch, getState) => {
-  dispatch({ type: SOCKET_DISCONNECTED })
-  disconnect()
-}
-
-export const listenTimer = () => (dispatch, getState) => {
+export const listenTimer = () => (dispatch, getState, { connect, disconnect, on }) => {
   on('timer', (message) => {
     dispatch({ type: TIMER, timer: message })
   })
+}
+
+export const disconnectSocket = () => (dispatch, getState, { connect, disconnect, on }) => {
+  disconnect()
 }

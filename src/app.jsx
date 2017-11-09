@@ -1,17 +1,21 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import { Provider } from 'react-redux'
 
 import Home from './components/home.jsx'
 import Away from './components/away.jsx'
 import Connected from './components/connected.jsx'
 import NotFound from './components/not-found.jsx'
-import store from './redux/index.js'
 
-export default class App extends Component {
+import { listenSocket } from './redux/socket.js'
+
+
+class App extends Component {
+  componentDidMount() {
+    this.props.listenSocket()
+  }
   render() {
     return (
-      <Provider store={store} >
         <BrowserRouter>
           <div>
               <ul>
@@ -28,7 +32,16 @@ export default class App extends Component {
               </Switch>
           </div>
         </BrowserRouter>
-      </Provider>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  socketReducer: state.socketReducer,
+})
+
+const mapDispatchToProps = dispatch => ({
+  listenSocket: () => dispatch(listenSocket()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
